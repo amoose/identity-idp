@@ -69,6 +69,15 @@ class ApplicationController < ActionController::Base
     redirect_to user_two_factor_authentication_url
   end
 
+  def create_event(event_type, user = current_user)
+    Event.create!(
+      user_id: user.id,
+      event_type: event_type,
+      ip_address: request.remote_ip,
+      user_agent: request.user_agent
+    )
+  end
+
   def request_attributes
     {
       user_agent: request.user_agent,

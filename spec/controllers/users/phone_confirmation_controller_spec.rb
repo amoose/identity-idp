@@ -66,6 +66,9 @@ describe Users::PhoneConfirmationController, devise: true do
       subject.user_session[:unconfirmed_mobile] = '+1 (555) 555-5555'
       subject.user_session[:phone_confirmation_code] = '123'
       @previous_mobile_confirmed_at = subject.current_user.mobile_confirmed_at
+      stub_analytics(subject.current_user)
+      allow(@analytics).to receive(:track_event)
+      allow(subject).to receive(:create_event)
     end
 
     context 'user has an existing mobile number' do
@@ -89,6 +92,18 @@ describe Users::PhoneConfirmationController, devise: true do
         it 'displays success flash notice' do
           expect(flash[:success]).to eq t('notices.phone_confirmation_successful')
         end
+
+        it 'tracks the update and confirmation event' do
+          expect(@analytics).to have_received(:track_event).
+            with('User confirmed their phone number')
+          expect(@analytics).to have_received(:track_event).
+            with('User changed and confirmed their phone number')
+        end
+
+        it 'creates a new :phone_changed event' do
+          expect(subject).to have_received(:create_event).with(:phone_changed)
+          expect(subject).to have_received(:create_event).exactly(:once)
+        end
       end
 
       context 'user enters an invalid code' do
@@ -111,23 +126,11 @@ describe Users::PhoneConfirmationController, devise: true do
         it 'displays error flash notice' do
           expect(flash[:error]).to eq t('errors.invalid_confirmation_code')
         end
-      end
 
-      it 'tracks the update and confirmation event' do
-        stub_analytics(subject.current_user)
-        expect(@analytics).to receive(:track_event).with('User confirmed their phone number')
-        expect(@analytics).to receive(:track_event).
-          with('User changed and confirmed their phone number')
-
-        post :confirm, code: '123'
-      end
-
-      it 'tracks an event when the user enters an invalid code' do
-        stub_analytics(subject.current_user)
-        expect(@analytics).to receive(:track_event).
-          with('User entered invalid phone confirmation code')
-
-        post :confirm, code: '999'
+        it 'record an analytics event' do
+          expect(@analytics).to have_received(:track_event).
+            with('User entered invalid phone confirmation code')
+        end
       end
     end
 
@@ -143,14 +146,18 @@ describe Users::PhoneConfirmationController, devise: true do
         it 'redirects to profile page' do
           expect(response).to redirect_to(profile_path)
         end
-      end
 
-      it 'tracks the confirmation event' do
-        stub_analytics(subject.current_user)
-        expect(@analytics).to receive(:track_event).with('User confirmed their phone number')
-        expect(@analytics).to receive(:track_event).with('Authentication Successful')
+        it 'tracks the confirmation event' do
+          expect(@analytics).to have_received(:track_event).
+            with('User confirmed their phone number')
+          expect(@analytics).to have_received(:track_event).
+            with('Authentication Successful')
+        end
 
-        post :confirm, code: '123'
+        it 'creates a new :phone_confirmed event' do
+          expect(subject).to have_received(:create_event).with(:phone_confirmed)
+          expect(subject).to have_received(:create_event).exactly(:once)
+        end
       end
     end
   end

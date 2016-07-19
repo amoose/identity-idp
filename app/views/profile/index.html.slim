@@ -18,7 +18,16 @@ h2.h5.mt4.mb2 = t('headings.profile.account_settings')
     .sm-col.sm-col-2.px1.sm-right-align
       = link_to 'Edit', edit_mobile_path, \
         class: 'btn btn-primary px1 py0 h6 regular'
-.py2.border-top.border-bottom
+
+h2.h5.mt4.mb2 = t('headings.profile.advanced_settings')
+.py2.border-top
+  .clearfix.mxn1
+    .sm-col.sm-col-8.px1 = t('headings.delete_account')
+    .sm-col.sm-col-4.px1.sm-right-align
+      = button_to t('forms.buttons.delete_account'), user_destroy_confirm_path, \
+        method: :get, class: 'btn btn-primary px1 py0 h6 regular'
+
+.py2.border-top
   .clearfix.mxn1
     .sm-col.sm-col-8.px1 = 'Authenticator App'
     .sm-col.sm-col-4.px1.sm-right-align
@@ -29,21 +38,16 @@ h2.h5.mt4.mb2 = t('headings.profile.account_settings')
         = button_to 'Enable', authenticator_setup_url, method: :get, \
           class: 'btn btn-primary px1 py0 h6 regular'
 
-- unless current_user.active_identities.empty?
-  h2.h5.mt4.mb2 = t('headings.profile.agencies')
-  - current_user.active_identities.each do |i|
-    .py2.border-top
-      .clearfix.mxn1
-        .sm-col.sm-col-8.px1
-          .h3.truncate = i.display_name
-        .sm-col.sm-col-4.px1
-          .h6.bold = 'Last login'
-          .h5 = i.last_authenticated_at.to_s(:date_pretty)
-
-h2.h5.mt4.mb2 = t('headings.profile.advanced_settings')
-.py2.border-top.border-bottom
+h2.h5.mt4.mb2 = t('headings.profile.account_history')
+.py2.border-top
   .clearfix.mxn1
-    .sm-col.sm-col-8.px1 = t('headings.delete_account', app_name: APP_NAME)
-    .sm-col.sm-col-4.px1.sm-right-align
-      = button_to t('forms.buttons.delete_account'), user_destroy_confirm_path, \
-        method: :get, class: 'btn btn-primary px1 py0 h6 regular'
+- current_user.events.each do |i|
+    .clearfix.mxn1
+      .sm-col.sm-col-6.px1
+        .h3.truncate = Event.event_type_to_s(i.event_type)
+      .sm-col.sm-col-2.px1
+        .h6.bold = 'From'
+        .h5 = i.ip_address
+      .sm-col.sm-col-4.px1
+        .h6.bold = 'When'
+        .h5 = i.created_at.to_formatted_s(:long)

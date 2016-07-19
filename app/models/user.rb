@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :authorizations, dependent: :destroy
   has_many :identities, dependent: :destroy
   has_many :profiles, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   def set_default_role
     self.role ||= :user

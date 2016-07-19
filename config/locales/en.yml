@@ -7,6 +7,13 @@ en:
     messages:
       improbable_phone: Mobile number is invalid. Please make sure you enter a 10-digit phone number.
 
+  event_types:
+    account_created: Account created
+    phone_confirmed: Phone confirmed
+    phone_changed: Phone changed
+    email_changed: Email changed
+    password_changed: Password changed
+
   forms:
     buttons:
       continue_browsing: Continue Browsing
@@ -75,7 +82,7 @@ en:
       index: Admin Interface
     confirmations:
       new: Resend confirmation instructions
-    delete_account: Delete my %{app_name} account
+    delete_account: Delete my account
     edit_info:
       email: Edit your email
       mobile: Edit your phone number
@@ -86,7 +93,7 @@ en:
     profile:
       account_settings: Account settings
       advanced_settings: Advanced settings
-      agencies: Agencies I've logged into
+      account_history: Account history
       main: My account
     registrations:
       enter_email: Email address
@@ -117,6 +124,7 @@ en:
     validations:
       email:
         invalid: 'Please enter a valid email in the format of user@domain.com'
+
   idv:
     form:
       first_name: First name

@@ -13,6 +13,12 @@ if Rails.env.development?
       user.reset_password('password', 'password')
       user.mobile = format('+1 (415) 555-01%02d', index)
       user.mobile_confirmed_at = Time.current
+      Event.create(
+        user_id: user.id,
+        event_type: :account_created,
+        user_agent: 'Chrome 99',
+        ip_address: '127.0.0.1'
+      )
     end
   end
 end

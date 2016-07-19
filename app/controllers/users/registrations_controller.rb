@@ -59,14 +59,13 @@ module Users
 
     def process_updates(resource)
       updater = UserFlashUpdater.new(@update_user_profile_form, flash)
-
       updater.set_flash_message
 
       if @update_user_profile_form.mobile_changed?
         analytics.track_event('User asked to update their phone number')
-
         prompt_to_confirm_mobile(@update_user_profile_form.mobile)
       elsif is_flashing_format?
+        create_event(:password_changed)
         EmailNotifier.new(resource).send_password_changed_email
         redirect_to edit_user_registration_url
       end
@@ -86,10 +85,13 @@ module Users
     end
 
     def track_registration(form)
-      return analytics.track_event('Account Created', form.user) unless form.email_taken?
-
-      existing_user = User.find_by_email(form.email)
-      analytics.track_event('Registration Attempt with existing email', existing_user)
+      if form.email_taken?
+        existing_user = User.find_by_email(form.email)
+        analytics.track_event('Registration Attempt with existing email', existing_user)
+      else
+        analytics.track_event('Account Created', form.user)
+        create_event(:account_created, form.user)
+      end
     end
   end
 end

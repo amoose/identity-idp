@@ -74,8 +74,7 @@ describe 'user edits their account', email: true do
     it 'tracks the confirmation event' do
       stub_analytics(user)
 
-      expect(@analytics).to receive(:track_event).
-        with('Email changed and confirmed', user)
+      expect(@analytics).to receive(:track_event).with('Email change confirmed', user)
 
       get_via_redirect parse_email_for_link(last_email, /confirmation_token/)
     end

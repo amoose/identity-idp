@@ -414,6 +414,7 @@ describe Users::RegistrationsController, devise: true do
       allow(form).to receive_message_chain(:user, :email).and_return('new@example.com')
 
       expect(@analytics).to receive(:track_event).with('Account Created', form.user)
+      expect(subject).to receive(:create_event).with(:account_created, form.user)
 
       post :create, user: { email: 'new@example.com' }
     end
