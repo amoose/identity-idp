@@ -7,6 +7,9 @@ module Idv
     def index
     end
 
+    def finance
+    end
+
     def create
       resolution = start_idv_session
       if resolution.success

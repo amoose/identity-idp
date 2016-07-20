@@ -1,33 +1,37 @@
 - title t('idv.titles.intro')
 
+
 h1.heading = t('idv.titles.expectations')
-
-p
-  | In order to use this service, we need to gather some more
-   information about you. Your personal information will be
-   used to help verify your identity.
-
-p You will need:
-
-ul
-  li Full name
-  li Current address
-  li Birthdate
-  li Social Security Number (SSN) or Individual Tax Identification Number (ITIN)
-  li
-    | Financial account
+.black
+  .mb2
+    | <strong>1.</strong> Please have the following <strong>basic information</strong>
+      and materials to complete registration with login.gov:
     ul
-      li Credit Card OR
-      li Mortgage or Home Equity Loan OR
-      li Home Equity Line of Credit OR
-      li Auto Loan
+      li Full name
+      li Birthdate
+      li Social Security Number (SSN) <em>or</em> Individual Tax Identification Number (ITIN)
+      li Mailing address
+  .mb2
+    | <strong>2.</strong> Additionally, we need a number from
+      <strong>only one of your financial accounts</strong>. We can
+      use any of the following:
+    ul.m0
+      li Last 8 digits of a credit card <em>or</em>
+      li Auto loan account number
+      li Mortgage or Home equity loan account number <em>or</em>
+      li Home equity line of credit account number
+    | You will <em>never</em> be charged any money, and are <em>not</em>
+      sharing any account balances, or other financial information with us.
+  .mb2
+    | <strong>3.</strong> Finally, we need your official phone number which can be:
+    ul
+      li XYZ, and not XYZ
+  p
+    | We have partnered with a trusted third party company to verify
+      this information and your identity.
+  p.bold Do you have all of this information available?
 
-p
-  | You will only need to provide the loan account number or a few digits from a
-   credit card number. We only use this information to verify your identity.
+= link_to 'No', idv_sessions_path, class: 'btn btn-primary mr1', data: { no_turbolink: true }
 
-  strong
-    | You will not be charged any money and are not sharing any account balances
-     or other financial information with us.
-
-= link_to 'Continue', idv_sessions_path, data: { no_turbolink: true }
+= link_to 'Yes', idv_sessions_path, \
+  class: 'btn btn-primary', data: { no_turbolink: true }

@@ -60,6 +60,7 @@ Rails.application.routes.draw do
   get '/idv' => 'idv#index'
   namespace :idv do
     resources :questions, :sessions, :confirmations
+    get 'finance' => 'sessions#finance'
   end
   get '/phone_confirmation' => 'users/phone_confirmation#show'
   get '/phone_confirmation/send' => 'users/phone_confirmation#send_code'
