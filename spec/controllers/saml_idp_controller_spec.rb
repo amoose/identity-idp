@@ -115,10 +115,7 @@ describe SamlIdpController do
     context 'with LOA3 but the identity is already verified' do
       it 'does not redirect the user to the IdV URL' do
         user = create(:user, :signed_up)
-        generate_saml_response(user, loa3_saml_settings)
-
         user.profiles.create(verified_at: Time.current, active: true, activated_at: Time.current)
-
         generate_saml_response(user, loa3_saml_settings)
 
         expect(response).to_not be_redirect
@@ -593,6 +590,7 @@ describe SamlIdpController do
         end
 
         it 'includes the mobile Attribute element' do
+          puts decrypted_saml_response
           xpath = '//ds:Attribute[@Name="mobile"]'
           mobile = decrypted_saml_response.at(xpath, ds: Saml::XML::Namespaces::ASSERTION)
 

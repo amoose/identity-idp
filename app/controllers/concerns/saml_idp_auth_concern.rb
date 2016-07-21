@@ -46,7 +46,7 @@ module SamlIdpAuthConcern
   end
 
   def identity_not_verified?
-    UserDecorator.new(current_user).identity_not_verified?
+    !current_user.verified?
   end
 
   def active_identity
