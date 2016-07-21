@@ -66,7 +66,11 @@ class User < ActiveRecord::Base
   end
 
   def active_profile
-    profiles.where(active: true).first
+    profiles.find { |p| p.active? }
+  end
+
+  def verified?
+    active_profile ? true : false
   end
 
   # To send emails asynchronously via ActiveJob.
