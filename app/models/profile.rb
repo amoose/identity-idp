@@ -23,6 +23,22 @@ class Profile < ActiveRecord::Base
       phone: applicant.phone
     )
   end
+
+  def self.default_attribute_bundle
+    [
+      :first_name,
+      :middle_name,
+      :last_name,
+      :address1,
+      :address2,
+      :city,
+      :state,
+      :zipcode,
+      :dob,
+      :ssn,
+      :phone
+    ]
+  end
   # rubocop:enable MethodLength
 
   def activate

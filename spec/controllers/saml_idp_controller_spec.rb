@@ -590,7 +590,6 @@ describe SamlIdpController do
         end
 
         it 'includes the mobile Attribute element' do
-          puts decrypted_saml_response
           xpath = '//ds:Attribute[@Name="mobile"]'
           mobile = decrypted_saml_response.at(xpath, ds: Saml::XML::Namespaces::ASSERTION)
 
